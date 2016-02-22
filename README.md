@@ -36,8 +36,8 @@ SimpleTableView inherits from UITableView.It is composed of tableView a Paginati
 ```objc
 #import "STVSimpleTableView.h>
 #import "STVPaginatingView.h"
-
 ....
+
 @property (nonatomic, strong) STVSimpleTableView *tableView;
 
 @property (nonatomic, strong) STVPaginatingView *paginatingView;
