@@ -12,6 +12,9 @@
 @class STVSimpleTableView;
 @class STVPaginatingView;
 
+/**
+ Defines methods for manging pagination and refresing of content.
+ */
 @protocol STVDataRetrievalTableViewDelegate <NSObject>
 
 @optional
@@ -40,6 +43,9 @@
 
 @end
 
+/**
+ Table to show any content on a dataSource, requires cell customization.
+ */
 @interface STVSimpleTableView : UITableView
 
 /**
