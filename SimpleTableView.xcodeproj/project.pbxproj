@@ -11,8 +11,8 @@
 		3B611DC91C7A62480029EE7D /* STVSimpleTableViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B611DC81C7A62480029EE7D /* STVSimpleTableViewTests.m */; };
 		3B611DD91C7A62A80029EE7D /* STVPaginatingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B611DD41C7A62A80029EE7D /* STVPaginatingView.h */; };
 		3B611DDA1C7A62A80029EE7D /* STVPaginatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B611DD51C7A62A80029EE7D /* STVPaginatingView.m */; };
-		3B611DDB1C7A62A80029EE7D /* STVTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B611DD71C7A62A80029EE7D /* STVTableView.h */; };
-		3B611DDC1C7A62A80029EE7D /* STVableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B611DD81C7A62A80029EE7D /* STVableView.m */; };
+		3B611DDB1C7A62A80029EE7D /* STVSimpleTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B611DD71C7A62A80029EE7D /* STVSimpleTableView.h */; };
+		3B611DDC1C7A62A80029EE7D /* STVSimpleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B611DD81C7A62A80029EE7D /* STVSimpleTableView.m */; };
 		3B611DE21C7A64820029EE7D /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3B611DE11C7A64820029EE7D /* Podfile */; };
 		44282938136F13E48E31E22E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A73761015369D3AB8969FB1B /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -36,8 +36,8 @@
 		3B611DCA1C7A62480029EE7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B611DD41C7A62A80029EE7D /* STVPaginatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVPaginatingView.h; sourceTree = "<group>"; };
 		3B611DD51C7A62A80029EE7D /* STVPaginatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVPaginatingView.m; sourceTree = "<group>"; };
-		3B611DD71C7A62A80029EE7D /* STVTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVTableView.h; sourceTree = "<group>"; };
-		3B611DD81C7A62A80029EE7D /* STVableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVableView.m; sourceTree = "<group>"; };
+		3B611DD71C7A62A80029EE7D /* STVSimpleTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVSimpleTableView.h; sourceTree = "<group>"; };
+		3B611DD81C7A62A80029EE7D /* STVSimpleTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVSimpleTableView.m; sourceTree = "<group>"; };
 		3B611DE11C7A64820029EE7D /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		439E3F7B30EF3C8FAC60878B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A73761015369D3AB8969FB1B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,8 +123,8 @@
 		3B611DD61C7A62A80029EE7D /* TableView */ = {
 			isa = PBXGroup;
 			children = (
-				3B611DD71C7A62A80029EE7D /* STVTableView.h */,
-				3B611DD81C7A62A80029EE7D /* STVableView.m */,
+				3B611DD71C7A62A80029EE7D /* STVSimpleTableView.h */,
+				3B611DD81C7A62A80029EE7D /* STVSimpleTableView.m */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -146,7 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B611DD91C7A62A80029EE7D /* STVPaginatingView.h in Headers */,
-				3B611DDB1C7A62A80029EE7D /* STVTableView.h in Headers */,
+				3B611DDB1C7A62A80029EE7D /* STVSimpleTableView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B611DDC1C7A62A80029EE7D /* STVableView.m in Sources */,
+				3B611DDC1C7A62A80029EE7D /* STVSimpleTableView.m in Sources */,
 				3B611DDA1C7A62A80029EE7D /* STVPaginatingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
