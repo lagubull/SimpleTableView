@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/cocoapods/l/SimpleTableView.svg?style=flat)](http://cocoapods.org/pods/SimpleTableView)
 [![Platform](https://img.shields.io/cocoapods/p/SimpleTableView.svg?style=flat)](http://cocoapods.org/pods/SimpleTableView)
 [![CocoaPods](https://img.shields.io/cocoapods/metrics/doc-percent/SimpleTableView.svg)](http://cocoapods.org/pods/SimpleTableView)
+[![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/lagubull/simpletableview)](http://clayallsopp.github.io/readme-score?url=https://github.com/lagubull/simpletableview)
 
 SimpleTableView is an easy way of using a tableView connected to CoreData via a NSFetchedResultsController with pagination capabilities.
 
@@ -27,20 +28,29 @@ $ pod install
 
 ##Usage
 
-SimpleTableView inherits from UITableView.It is composed of tableView a PaginationView and NSFetchedResultsController. The patinationView can be extended by your own custom class. The fetchedResultsController needs to be configured and then injected but it is not mandatory either.
+SimpleTableView inherits from UITableView. It is composed of tableView a PaginationView and NSFetchedResultsController.
 
-#### STVTableView
+Pagination is a way of retrieving content from an external source in a controlled manner. When scrolling near the end of the tableView a call to the pagination mechanism is invoked. This is controlled by the property
+paginationOffset, by default this property contains 5 based on an ideal page content size of 10 items.
+
+The patinationView can be extended by your own custom class. It contains an UIActivityIndicatorView that will spin in while not hidden along side a UILabel which text and appearance you can and must configure.
+kSTVPaginatingViewHeight contains the size of this view.
+
+The fetchedResultsController needs to be configured and then injected but it is not mandatory.
+
+In order to refresh the content in the table pull to refresh is enabled showing a UIRefreshControl at the top. This is connected to the Refresh delegate method so that you can choose the right behaviour.
+
+When connected to Coredata via NSFetchedResultsController, you can take advantage of the delegate didUpdateItemAtIndexPath, this will let you know the index of the cell that needs updating but it is up to the developer to implement this update.
+
+###STVTableView
 
 ####Creation
 
 ```objc
 #import "STVSimpleTableView.h>
-#import "STVPaginatingView.h"
 ....
 
 @property (nonatomic, strong) STVSimpleTableView *tableView;
-
-@property (nonatomic, strong) STVPaginatingView *paginatingView;
 ....
 
 - (STVSimpleTableView *)tableView
@@ -67,6 +77,38 @@ SimpleTableView inherits from UITableView.It is composed of tableView a Paginati
     
     return _tableView;
 }
+                                                
+```
+
+####Refresh
+
+```objc
+- (void)refresh
+{
+	//This method is called after pull to refresh so it would good implementing logic to
+	//populated the datasource.
+	
+	//An animation has been triggered for the UIRefreshControl.
+
+	[self.tableView didRefresh];
+}
+
+- (void)didUpdateItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	//A specific item has changed in Coredata, you might update the cell containing this item.
+}
+```
+
+###STVPaginationView
+
+####Creation
+
+```objc
+#import <STVPaginatingView.h>
+....
+
+@property (nonatomic, strong) STVPaginatingView *paginatingView;
+....
 
 - (STVPaginatingView *)paginatingView
 {
@@ -84,30 +126,19 @@ SimpleTableView inherits from UITableView.It is composed of tableView a Paginati
 }                                                       
 ```
 
-#### STVDataRetrievalTableViewDelegate
+####Pagination
 
 ```objc
-
-- (void)refresh
-{
-	//This method is called after pull to refresh so it would good implementing logic to
-	//populated the datasource.
-	
-	//An animation has been triggered for the UIRefreshControl.
-}
-
 - (void)paginate
 {
+	[self.tableView willPaginate]; // Will trigger a pagination animation.
+	
 	//This method is called when the table view is near to present the last few cells it would good implementing logic to
 	//populated the datasource.
 	
-	//An animation will be triggered for the paginationView if it exists.
+	[self.tableView didPaginate] // Will finish the pagination animation and prepare the tableView for a new pagination if needed.
 }
 
-- (void)didUpdateItemAtIndexPath:(NSIndexPath *)indexPath
-{
-	//A specific item has changed in Coredata, you might update the cell containing this item.
-}
 ```
 
 ##Found an issue?

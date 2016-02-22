@@ -21,7 +21,7 @@ CGFloat const kSTVPaginatingViewHeight = 60.0f;
 static CGFloat const kSTVPaginatingViewVerticalMargin = 10.0f;
 
 /**
- Height of the spinner image view
+ Height of the spinner image view.
  */
 static CGFloat const kSTVPaginatingViewSpinnerHeight = 17.0f;
 
@@ -109,17 +109,13 @@ static CGFloat const kSTVPaginatingViewSpinnerHeight = 17.0f;
 
 - (void)updateConstraints
 {
-    [super updateConstraints];
-    
-    /*---------------------*/
-    
     [self.activityView autoPinEdgeToSuperviewEdge:ALEdgeLeft
-                                            withInset:0.0f];
+                                        withInset:0.0f];
     
     [self.activityView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     
     [self.activityView autoSetDimensionsToSize:CGSizeMake(kSTVPaginatingViewSpinnerHeight,
-                                                              kSTVPaginatingViewSpinnerHeight)];
+                                                          kSTVPaginatingViewSpinnerHeight)];
     
     /*---------------------*/
     
@@ -146,6 +142,10 @@ static CGFloat const kSTVPaginatingViewSpinnerHeight = 17.0f;
     
     [self.containerView autoSetDimension:ALDimensionWidth
                                   toSize:(150.0f + kSTVPaginatingViewSpinnerHeight)];
+    
+    /*---------------------*/
+    
+    [super updateConstraints];
 }
 
 #pragma mark - StartAnimating
