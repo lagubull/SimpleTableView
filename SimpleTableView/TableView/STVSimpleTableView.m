@@ -1,18 +1,18 @@
 //
-//  STVTableView.m
+//  STVSimpleTableView.m
 //  SimpleTableView
 //
 //  Created by Javier Laguna on 21/02/2016.
 //  Copyright © 2016 Javier Laguna. All rights reserved.
 //
 
-#import "STVTableView.h"
+#import "STVSimpleTableView.h"
 
 #import <PureLayout/PureLayout.h>
 
 #import "STVPaginatingView.h"
 
-@interface STVTableView () <NSFetchedResultsControllerDelegate>
+@interface STVSimpleTableView () <NSFetchedResultsControllerDelegate>
 
 /**
  Indicates wether pagination is happening.
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation STVTableView
+@implementation STVSimpleTableView
 
 #pragma mark - Init
 

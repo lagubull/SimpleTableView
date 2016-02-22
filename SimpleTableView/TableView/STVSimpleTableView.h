@@ -1,5 +1,5 @@
 //
-//  STVTableView.h
+//  STVSimpleTableView.h
 //  SimpleTableView
 //
 //  Created by Javier Laguna on 21/02/2016.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@class STVTableView;
+@class STVSimpleTableView;
 @class STVPaginatingView;
 
 @protocol STVDataRetrievalTableViewDelegate <NSObject>
@@ -24,7 +24,7 @@
 /**
  Called after FSNDataRetrievalTableView instance has asked for data refresh;
  */
-- (void)dataRetrievalTableViewDidRequestRefresh:(STVTableView *)tableView;
+- (void)dataRetrievalTableViewDidRequestRefresh:(STVSimpleTableView *)tableView;
 
 /**
  Called when we have past the half of the items in the last page loaded.
@@ -40,7 +40,7 @@
 
 @end
 
-@interface STVTableView : UITableView
+@interface STVSimpleTableView : UITableView
 
 /**
  Delegate of the class.
