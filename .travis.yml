@@ -1,0 +1,13 @@
+language: objective-c
+
+before_install:
+    - rvm use system
+    - sudo gem install cocoapods -v '0.39.0'
+
+before_script:
+    pod install
+
+osx_image: xcode7.2
+
+script:
+    xctool -workspace SimpleTableView.xcworkspace -scheme SimpleTableView build -sdk iphonesimulator
