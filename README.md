@@ -34,22 +34,23 @@ SimpleTableView inherits from UITableView.It is composed of tableView a Paginati
 ####Creation
 
 ```objc
-#import "STVTableView.h>
+#import "STVSimpleTableView.h>
+#import "STVPaginatingView.h"
 
 ....
-@property (nonatomic, strong) JSCTableView *tableView;
+@property (nonatomic, strong) STVSimpleTableView *tableView;
 
-@property (nonatomic, strong) JSCPaginatingView *paginatingView;
+@property (nonatomic, strong) STVPaginatingView *paginatingView;
 ....
 
-- (STVTableView *)tableView
+- (STVSimpleTableView *)tableView
 {
     if (!_tableView)
     {
-        _tableView = [[STVTableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                    kNavigationBarHeight,
-                                                                    self.view.bounds.size.width,
-                                                                    self.view.bounds.size.height - kNavigationBarHeight)];
+        _tableView = [[STVSimpleTableView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                    	  kNavigationBarHeight,
+                                                                    	  self.view.bounds.size.width,
+                                                                   	   	  self.view.bounds.size.height - kNavigationBarHeight)];
         
         _tableView.backgroundColor = [UIColor lightGrayColor];
         
@@ -108,8 +109,6 @@ SimpleTableView inherits from UITableView.It is composed of tableView a Paginati
 	//A specific item has changed in Coredata, you might update the cell containing this item.
 }
 ```
-
-
 
 ##Found an issue?
 
