@@ -24,7 +24,7 @@ Then, run the following command:
 $ pod install
 ```
 
-> CocoaPods 0.39.0+ is required to build EasyAlert.
+> CocoaPods 0.39.0+ is required to build SimpleTableView.
 
 ##Usage
 
