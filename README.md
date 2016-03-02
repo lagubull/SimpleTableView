@@ -70,10 +70,10 @@ When connected to Coredata via NSFetchedResultsController, you can take advantag
         _tableView.emptyView = self.emptyView;
         _tableView.loadingView = self.loadingView;
         _tableView.paginationOffset = @(5);
-		_tableView.sectionToCheckForData = @(0);
+	_tableView.sectionToCheckForData = @(0);
                 
         _tableView.dataSource = self;
-   	    _tableView.delegate = self;
+   	_tableView.delegate = self;
     	_tableView.dataRetrievalDelegate = self;
     	_tableView.fetchedResultsController = self.fetchedResultsController;
     }
@@ -169,7 +169,7 @@ Optional view to show automatically when there is no data. The only requirement 
     if (!_tableView)
     {
 ...
- 		_tableView.emptyView = self.emptyView;
+ 	_tableView.emptyView = self.emptyView;
 ...
 ```
 
@@ -213,7 +213,7 @@ Optional view to show automatically while data is being retrieved. The only requ
     if (!_tableView)
     {
 ...
- 		_tableView.loadingView = self.loadingViews;
+ 	_tableView.loadingView = self.loadingViews;
 ...
 ```
 
@@ -258,7 +258,7 @@ for the section in particular that will have real content.
     if (!_tableView)
     {
 ...
-		_tableView.sectionToCheckForData = @(0);
+	_tableView.sectionToCheckForData = @(0);
 ...
 ```
 
