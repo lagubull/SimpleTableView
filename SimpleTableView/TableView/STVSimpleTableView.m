@@ -12,6 +12,11 @@
 
 #import "STVPaginatingView.h"
 
+/**
+ Duration of emptyview animations.
+ */
+static CGFloat const kSTVTableViewEmptyViewAnimationDuration = 0.75;
+
 @interface STVSimpleTableView () <NSFetchedResultsControllerDelegate>
 
 /**
@@ -23,6 +28,31 @@
  Shown on pull to refresh.
  */
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+
+/**
+ Indicates that loading actions have finished
+ */
+@property (nonatomic, assign) BOOL didFinishLoadingContentActions;
+
+/**
+ A bit to tell the tableview that data is being loaded despite the datasource may not have been notified
+ */
+@property (nonatomic, assign, getter=isDataLoaded) BOOL dataLoaded;
+
+/**
+ Is the loading view currently being shown.
+ */
+@property (nonatomic, assign, readwrite) BOOL isShowingLoadingView;
+
+/**
+ Updates the empty view to show or hide based on the current hasData value.
+ */
+- (void)updateEmptyView;
+
+/**
+ Updates the loading view to show or hide based on the current hasData value.
+ */
+- (void)updateLoadingView;
 
 @end
 
@@ -103,6 +133,194 @@
     }
 }
 
+#pragma mark - EmptyView
+
+- (void)updateEmptyView
+{
+    if (self.emptyView)
+    {
+        if ([self hasData])
+        {
+            [UIView animateWithDuration:kSTVTableViewEmptyViewAnimationDuration
+                             animations:^
+             {
+                 self.emptyView.alpha = 0.0f;
+             }
+                             completion:^(BOOL finished)
+             {
+                 [self.emptyView removeFromSuperview];
+             }];
+        }
+        else
+        {
+            self.emptyView.alpha = 0.0f;
+            [self addSubview:self.emptyView];
+            [self.emptyView updateConstraints];
+            
+            [UIView animateWithDuration:kSTVTableViewEmptyViewAnimationDuration
+                             animations:^
+             {
+                 self.emptyView.alpha = 1.0f;
+             }];
+        }
+    }
+}
+
+#pragma mark - LoadingView
+
+- (void)updateLoadingView
+{
+    if (self.loadingView)
+    {
+        if (self.didFinishLoadingContentActions ||
+            [self hasData])
+        {
+            self.isShowingLoadingView = NO;
+            
+            [UIView animateWithDuration:kSTVTableViewEmptyViewAnimationDuration
+                             animations:^
+             {
+                 self.loadingView.alpha = 0.0f;
+             }
+                             completion:^(BOOL finished)
+             {
+                 [self.loadingView removeFromSuperview];
+             }];
+        }
+        else
+        {
+            self.isShowingLoadingView = YES;
+            
+            self.loadingView.alpha = 0.0f;
+            [self addSubview:self.loadingView];
+            [self.loadingView updateConstraints];
+            
+            [UIView animateWithDuration:kSTVTableViewEmptyViewAnimationDuration
+                             animations:^
+             {
+                 self.loadingView.alpha = 1.0f;
+             }];
+        }
+    }
+}
+
+#pragma mark - Data
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.loadingView)
+    {
+        if (!self.loadingView.superview)
+        {
+            [self updateLoadingView];
+        }
+        
+        [self bringSubviewToFront:self.loadingView];
+    }
+    else
+    {
+        if (!self.emptyView.superview)
+        {
+            [self updateEmptyView];
+        }
+        
+        [self bringSubviewToFront:self.emptyView];
+    }
+}
+
+- (void)endUpdates
+{
+    [super endUpdates];
+    
+    if (self.loadingView)
+    {
+        [self updateLoadingView];
+    }
+    
+    [self updateEmptyView];
+}
+
+- (void)reloadData
+{
+    [super reloadData];
+    
+    self.dataLoaded = NO;
+    
+    if (self.loadingView)
+    {
+        [self updateLoadingView];
+    }
+    else
+    {
+        [self updateEmptyView];
+    }
+}
+
+- (BOOL)hasData
+{
+    BOOL hasData = self.isDataLoaded;
+    
+    if (!hasData)
+    {
+        NSNumber *sectionToCheckForData = self.sectionToCheckForData;
+        NSInteger numberOfRowsInSection = 0;
+        
+        for (NSInteger rowNumber = 0; rowNumber < [self numberOfSections]; rowNumber++)
+        {
+            if (sectionToCheckForData)
+            {
+                numberOfRowsInSection = [self numberOfRowsInSection:self.sectionToCheckForData.integerValue];
+            }
+            else
+            {
+                numberOfRowsInSection = [self numberOfRowsInSection:self.sectionToCheckForData.integerValue];
+            }
+            
+            if (numberOfRowsInSection > 0)
+            {
+                hasData = YES;
+                
+                rowNumber = [self numberOfSections];
+            }
+        }
+    }
+    
+    return hasData;
+}
+
+#pragma mark - DidFinishLoadingContent
+
+- (void)didFinishLoadingContent:(BOOL)hasData
+{
+    self.dataLoaded = hasData;
+    
+    if (self.loadingView.superview)
+    {
+        [UIView animateWithDuration:kSTVTableViewEmptyViewAnimationDuration
+                         animations:^
+         {
+             self.loadingView.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             [self.loadingView removeFromSuperview];
+         }];
+    }
+    
+    [self updateEmptyView];
+    
+    self.didFinishLoadingContentActions = YES;
+}
+
+#pragma mark - WillLoadContent
+
+- (void)willLoadContent
+{
+    self.didFinishLoadingContentActions = NO;
+}
+
 #pragma mark - Dequeue
 
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier
@@ -147,9 +365,10 @@
     return _refreshControl;
 }
 
-- (void)didRefresh
+- (void)didRefreshWithContent:(BOOL)hasContent
 {
     [self.refreshControl endRefreshing];
+    [self didFinishLoadingContent:hasContent];
 }
 
 #pragma mark - FetchResultController
@@ -172,7 +391,7 @@
         [self.paginatingView startAnimating];
         
         self.paginating = YES;
-
+        
         self.tableFooterView = self.paginatingView;
     }
 }
@@ -269,6 +488,5 @@
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self endUpdates];
 }
-
 
 @end

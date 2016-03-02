@@ -61,6 +61,11 @@
 @property (nonatomic, strong) NSNumber *paginationOffset;
 
 /**
+ The section that will be used to check if the Table View has data.
+ */
+@property (nonatomic, strong) NSNumber *sectionToCheckForData;
+
+/**
  Used to connect the TableView with Core Data.
  */
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -69,6 +74,31 @@
  Pagination content view to show the local user we are retrieving fresh data.
  */
 @property (nonatomic, strong) STVPaginatingView *paginatingView;
+
+/**
+ Returns YES if the Data Source view has data, NO if not.
+ */
+@property (nonatomic, assign, readonly) BOOL hasData;
+
+/**
+ View to display when the Data Source View is empty.
+ */
+@property (nonatomic, strong) UIView *emptyView;
+
+/**
+ Is the loading view currently being shown.
+ */
+@property (nonatomic, assign, readonly) BOOL isShowingLoadingView;
+
+/**
+ View to display when the Data Source View is loading.
+ */
+@property (nonatomic, strong) UIView *loadingView;
+
+/**
+ Notify the tableView loading is starting
+ */
+- (void)willLoadContent;
 
 /**
  Tells the tableView we are about to paginate.
@@ -83,6 +113,20 @@
 /**
  Tells the tableView that data has finished refreshing.
  */
-- (void)didRefresh;
+//- (void)didRefresh;
+
+/**
+ Removes refresh indicator from tableview.
+ 
+ @param hasContent - YES if the table has content or NO
+ */
+- (void)didRefreshWithContent:(BOOL)hasContent;
+
+/**
+ Notify the tableView loading has finished
+ 
+ @param YES if there is data in the tableView
+ */
+- (void)didFinishLoadingContent:(BOOL)hasData;
 
 @end

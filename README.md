@@ -67,8 +67,11 @@ When connected to Coredata via NSFetchedResultsController, you can take advantag
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.allowsSelection = NO;
         _tableView.paginatingView = self.paginatingView;
+        _tableView.emptyView = self.emptyView;
+        _tableView.loadingView = self.loadingView;
         _tableView.paginationOffset = @(5);
-        
+		_tableView.sectionToCheckForData = @(0);
+                
         _tableView.dataSource = self;
    	    _tableView.delegate = self;
     	_tableView.dataRetrievalDelegate = self;
@@ -85,12 +88,25 @@ When connected to Coredata via NSFetchedResultsController, you can take advantag
 ```objc
 - (void)refresh
 {
-	//This method is called after pull to refresh so it would good implementing logic to
+	//This method is called after pull to refresh so it would be good implementing logic to
 	//populated the datasource.
 	
 	//An animation has been triggered for the UIRefreshControl.
 
-	[self.tableView didRefresh];
+	 [JSCFeedAPIManager retrieveFeedWithMode:JSCDataRetrievalOperationModeFirstPage
+                                    Success:^(id result)
+     {
+         BOOL hasContent = weakSelf.fetchedResultsController.fetchedObjects.count > 0;
+         
+         [weakSelf.tableView didRefreshWithContent:hasContent];
+         [weakSelf.tableView reloadData];
+     }
+                                    failure:^(NSError *error)
+     {
+         BOOL hasContent = weakSelf.fetchedResultsController.fetchedObjects.count > 0;
+         
+         [weakSelf.tableView didRefreshWithContent:hasContent];
+     }];
 }
 
 - (void)didUpdateItemAtIndexPath:(NSIndexPath *)indexPath
@@ -139,6 +155,111 @@ When connected to Coredata via NSFetchedResultsController, you can take advantag
 	[self.tableView didPaginate] // Will finish the pagination animation and prepare the tableView for a new pagination if needed.
 }
 
+```
+
+###EmptyView
+
+Optional view to show automatically when there is no data. The only requirement is that is built on top of UIView.
+
+####Usage
+
+```
+- (STVSimpleTableView *)tableView
+{
+    if (!_tableView)
+    {
+...
+ 		_tableView.emptyView = self.emptyView;
+...
+```
+
+####Example
+
+#####Creation
+
+```objc
+#import "JSCEmptyView.h"
+
+/**
+ View to show when no data is available.
+ */
+@property (nonatomic, strong) JSCEmptyView *emptyView;
+
+...
+- (JSCEmptyView *)emptyView
+{
+    if (!_emptyView)
+    {
+        _emptyView = [[JSCEmptyView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                    0.0f,
+                                                                    self.view.bounds.size.width,
+                                                                    self.view.bounds.size.height)];
+        
+        _emptyView.messageLabel.text = NSLocalizedString(@"NoContentBody", nil);
+    }
+    
+    return _emptyView;
+}
+```
+
+###LoadingView
+Optional view to show automatically while data is being retrieved. The only requirement is that is built on top of UIView.
+
+####Usage
+
+```
+- (STVSimpleTableView *)tableView
+{
+    if (!_tableView)
+    {
+...
+ 		_tableView.loadingView = self.loadingViews;
+...
+```
+
+####Example
+
+#####Creation
+
+```objc
+#import "JSCLoadingView.h"
+
+/**
+ View to show while data is being loaded.
+ */
+@property (nonatomic, strong) JSCLoadingView *loadingView;
+
+...
+- (JSCLoadingView *)loadingView
+{
+    if (!_loadingView)
+    {
+        _loadingView = [[JSCLoadingView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                        0.0f,
+                                                                        self.view.bounds.size.width,
+                                                                        self.view.bounds.size.height)];
+    }
+    
+    return _loadingView;
+}
+```
+
+####sectionToCheckForData
+
+We can use this optional value if you are interested in the content a particular section. 
+This comes handy in case you have fixed content in some sections and want to only check 
+for the section in particular that will have real content.
+
+#####Usage
+
+```objc
+- (STVSimpleTableView *)tableView
+{
+    if (!_tableView)
+    {
+...
+		_tableView.sectionToCheckForData = @(0);
+...
 ```
 
 ##Found an issue?
