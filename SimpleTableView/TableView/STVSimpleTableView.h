@@ -111,11 +111,6 @@
 - (void)didPaginate;
 
 /**
- Tells the tableView that data has finished refreshing.
- */
-//- (void)didRefresh;
-
-/**
  Removes refresh indicator from tableview.
  
  @param hasContent - YES if the table has content or NO
