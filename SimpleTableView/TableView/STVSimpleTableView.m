@@ -133,7 +133,17 @@ static CGFloat const kSTVTableViewEmptyViewAnimationDuration = 0.75;
     }
 }
 
-#pragma mark - EmptyView
+#pragma mark - Subviews
+
+- (UIRefreshControl *)refreshControl
+{
+    if (!_refreshControl)
+    {
+        _refreshControl = [[UIRefreshControl alloc] init];
+    }
+    
+    return _refreshControl;
+}
 
 - (void)updateEmptyView
 {
@@ -165,8 +175,6 @@ static CGFloat const kSTVTableViewEmptyViewAnimationDuration = 0.75;
         }
     }
 }
-
-#pragma mark - LoadingView
 
 - (void)updateLoadingView
 {
@@ -201,6 +209,22 @@ static CGFloat const kSTVTableViewEmptyViewAnimationDuration = 0.75;
                  self.loadingView.alpha = 1.0f;
              }];
         }
+    }
+}
+
+#pragma mark - Setters
+
+- (void)setDataRetrievalDelegate:(id<STVDataRetrievalTableViewDelegate>)dataRetrievalDelegate
+{
+    [self willChangeValueForKey:NSStringFromSelector(@selector(dataRetrievalDelegate))];
+    _dataRetrievalDelegate = dataRetrievalDelegate;
+    [self didChangeValueForKey:NSStringFromSelector(@selector(dataRetrievalDelegate))];
+    
+    if ([_dataRetrievalDelegate respondsToSelector:@selector(refresh)])
+    {
+        [self.refreshControl addTarget:_dataRetrievalDelegate
+                                action:@selector(refresh)
+                      forControlEvents:UIControlEventValueChanged];
     }
 }
 
@@ -346,24 +370,8 @@ static CGFloat const kSTVTableViewEmptyViewAnimationDuration = 0.75;
     return cell;
 }
 
-#pragma mark - RefreshControl
+#pragma mark - DidRefreshWithContent
 
-- (UIRefreshControl *)refreshControl
-{
-    if (!_refreshControl)
-    {
-        _refreshControl = [[UIRefreshControl alloc] init];
-        
-        if ([self.dataRetrievalDelegate respondsToSelector:@selector(refresh)])
-        {
-            [_refreshControl addTarget:self.dataRetrievalDelegate
-                                action:@selector(refresh)
-                      forControlEvents:UIControlEventValueChanged];
-        }
-    }
-    
-    return _refreshControl;
-}
 
 - (void)didRefreshWithContent:(BOOL)hasContent
 {
