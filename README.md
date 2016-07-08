@@ -264,7 +264,7 @@ for the section in particular that will have real content.
 
 ##Found an issue?
 
-Please open a [new Issue here](https://github.com/lagubull/SimpleTableView/issues/new) if you run into a problem specific to EasyAlert, have a feature request, or want to share a comment.
+Please open a [new Issue here](https://github.com/lagubull/SimpleTableView/issues/new) if you run into a problem specific to SimpleTableView, have a feature request, or want to share a comment.
 
 Pull requests are encouraged and greatly appreciated! Please try to maintain consistency with the existing coding style. If you're considering taking on significant changes or additions to the project, please communicate in advance by opening a new Issue. This allows everyone to get onboard with upcoming changes, ensures that changes align with the project's design philosophy, and avoids duplicated work.
 
